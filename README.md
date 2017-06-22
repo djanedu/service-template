@@ -29,7 +29,6 @@
 以下是启动脚本的说明，请查看注释
 
 	#!/bin/sh
-	set -e
 
 	PATH=/sbin:/usr/sbin:/bin:/usr/bin
 
@@ -47,7 +46,7 @@
 	###########################################################################################################################
 
 
-	NAME=python
+	NAME="python"
 	DAEMON=./python
 	DESC="Python Simple Http Server"
 	USER=root      
@@ -66,7 +65,7 @@
 	  start)
 	    log_daemon_msg "Starting $DESC" "$NAME"
 		#daemon -X "$DAEMON $OPTIONS" --pidfile=$PID_FILE --user=$USER --chdir=${CHDIR}
-		start-stop-daemon --start --quiet --oknodo --background -m --user $USER --chdir $CHDIR --pidfile $PID_FILE  --group $GROUP --exec $DAEMON -- $OPTIONS  
+		start-stop-daemon --start --quiet  --background -m --user $USER --chdir $CHDIR --pidfile $PID_FILE  --group $GROUP --exec $DAEMON -- $OPTIONS  
 	    case "$?" in
 		0) log_end_msg 0 ;;
 		*) log_end_msg 1; exit 1 ;;
@@ -75,14 +74,14 @@
 	  stop)
 	    log_daemon_msg "Stopping $DESC" "$NAME"
 		#killproc -p $PID_FILE
-		start-stop-daemon --stop --quiet --oknodo  -m --user $USER --chdir $CHDIR --pidfile $PID_FILE  --group $GROUP --exec $DAEMON -- $OPTIONS  
+	    start-stop-daemon --stop --quiet   -m --user $USER --chdir $CHDIR --pidfile $PID_FILE  --group $GROUP --exec $DAEMON -- $OPTIONS  
 	    case "$?" in
 		0) log_end_msg 0 ;;
 		*) log_end_msg 1; exit 1 ;;
 	    esac
 		;;
 	  status)
-	   status_of_proc -p $PID_FILE $DAEMON $NAME && exit 0 || exit $?
+	    status_of_proc -p $PID_FILE $DAEMON $NAME && exit 0 || exit $?
 	   ;;
 	  restart|force-reload)
 		$0 stop
